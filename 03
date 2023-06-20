@@ -1,0 +1,335 @@
+root@student8-virtual-machine:~/바탕화면# cd
+root@student8-virtual-machine:~# apt-get -y install vsftpd
+패키지 목록을 읽는 중입니다... 완료
+의존성 트리를 만드는 중입니다... 완료
+상태 정보를 읽는 중입니다... 완료        
+다음 새 패키지를 설치할 것입니다:
+  vsftpd
+0개 업그레이드, 1개 새로 설치, 0개 제거 및 9개 업그레이드 안 함.
+115 k바이트 아카이브를 받아야 합니다.
+이 작업 후 334 k바이트의 디스크 공간을 더 사용하게 됩니다.
+받기:1 http://mirror.kakao.com/ubuntu bionic/main amd64 vsftpd amd64 3.0.3-9build1 [115 kB]
+내려받기 115 k바이트, 소요시간 0초 (597 k바이트/초)
+패키지를 미리 설정하는 중입니다...
+Selecting previously unselected package vsftpd.
+(데이터베이스 읽는중 ...현재 203979개의 파일과 디렉터리가 설치되어 있습니다.)
+Preparing to unpack .../vsftpd_3.0.3-9build1_amd64.deb ...
+Unpacking vsftpd (3.0.3-9build1) ...
+vsftpd (3.0.3-9build1) 설정하는 중입니다 ...
+Created symlink /etc/systemd/system/multi-user.target.wants/vsftpd.service → /lib/systemd/system/vsftpd.service.
+Processing triggers for man-db (2.10.2-1) ...
+root@student8-virtual-machine:~# nano /etc/vsftpd.conf
+root@student8-virtual-machine:~# cd /srv/ftp
+root@student8-virtual-machine:/srv/ftp# mkdir pub
+root@student8-virtual-machine:/srv/ftp# chmod 777 pub
+root@student8-virtual-machine:/srv/ftp# cd pub
+root@student8-virtual-machine:/srv/ftp/pub# cp /boot/vm* file1
+cp: 'file1' 대상은 디렉터리가 아닙니다
+root@student8-virtual-machine:/srv/ftp/pub# ls
+root@student8-virtual-machine:/srv/ftp/pub# ls -l
+합계 0
+root@student8-virtual-machine:/srv/ftp/pub# cp /boot/vm* file2
+cp: 'file2' 대상은 디렉터리가 아닙니다
+root@student8-virtual-machine:/srv/ftp/pub# systemctl restart vsftpd
+root@student8-virtual-machine:/srv/ftp/pub# systemctl enable vsftpd
+Synchronizing state of vsftpd.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable vsftpd
+^[[Aroot@student8-virtual-machine:/srv/ftp/pub# systemctl status vsftpd
+● vsftpd.service - vsftpd FTP server
+     Loaded: loaded (/lib/systemd/system/vsftpd.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2023-06-20 09:38:28 KST; 31s ago
+   Main PID: 2348 (vsftpd)
+      Tasks: 1 (limit: 4573)
+     Memory: 696.0K
+        CPU: 6ms
+     CGroup: /system.slice/vsftpd.service
+             └─2348 /usr/sbin/vsftpd /etc/vsftpd.conf
+
+ 6월 20 09:38:28 student8-virtual-machine systemd[1]: Starting vsftpd FTP server...
+ 6월 20 09:38:28 student8-virtual-machine systemd[1]: Started vsftpd FTP server.
+root@student8-virtual-machine:/srv/ftp/pub# ufw allow ftp
+규칙이 추가되었습니다
+규칙이 추가되었습니다 (v6)
+root@student8-virtual-machine:/srv/ftp/pub# systemctl stop ufw
+root@student8-virtual-machine:/srv/ftp/pub# mkdir file1
+root@student8-virtual-machine:/srv/ftp/pub# rm file1
+rm: 'file1'을(를) 제거할 수 없습니다: 디렉터리입니다
+root@student8-virtual-machine:/srv/ftp/pub# mkdir file1
+mkdir: `file1' 디렉터리를 만들 수 없습니다: 파일이 있습니다
+root@student8-virtual-machine:/srv/ftp/pub# ls -l
+합계 4
+drwxr-xr-x 2 root root 4096  6월 20 09:52 file1
+root@student8-virtual-machine:/srv/ftp/pub# cp /boot/vm* file1
+root@student8-virtual-machine:/srv/ftp/pub# cd file1
+root@student8-virtual-machine:/srv/ftp/pub/file1# ls
+vmlinuz  vmlinuz-5.19.0-32-generic  vmlinuz-5.19.0-35-generic  vmlinuz.old
+root@student8-virtual-machine:/srv/ftp/pub/file1# ufw allow ftp
+존재하는 규칙을 추가하는 걸 건너뜁니다
+존재하는 규칙을 추가하는 걸 건너뜁니다 (v6)
+root@student8-virtual-machine:/srv/ftp/pub/file1# systemctl stop ufw
+root@student8-virtual-machine:/srv/ftp/pub/file1# cd
+root@student8-virtual-machine:~# ls
+linkdir  new.txt  poly.tar  poly1.xz  snap  test  test1.txt  test1.txt.xz  test2  test2.txt  test3  test3.txt  공개  다운로드  문서  바탕화면  비디오  사진  음악  템플릿
+root@student8-virtual-machine:~# systemctl status apache2
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+    Drop-In: /usr/lib/systemd/system/apache2.service.d
+             └─apache2-systemd.conf
+     Active: active (running) since Tue 2023-06-20 09:33:52 KST; 36min ago
+   Main PID: 1064 (apache2)
+      Tasks: 55 (limit: 4573)
+     Memory: 8.0M
+        CPU: 236ms
+     CGroup: /system.slice/apache2.service
+             ├─1064 /usr/sbin/apache2 -k start
+             ├─1065 /usr/sbin/apache2 -k start
+             └─1068 /usr/sbin/apache2 -k start
+
+ 6월 20 09:33:51 student8-virtual-machine systemd[1]: Starting The Apache HTTP Server...
+ 6월 20 09:33:52 student8-virtual-machine apachectl[1030]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive global>
+ 6월 20 09:33:52 student8-virtual-machine systemd[1]: Started The Apache HTTP Server.
+root@student8-virtual-machine:~# systemctl status mysql
+● mysql.service - MySQL Community Server
+     Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2023-06-20 09:33:55 KST; 37min ago
+   Main PID: 1235 (mysqld)
+      Tasks: 27 (limit: 4573)
+     Memory: 201.9M
+        CPU: 3.376s
+     CGroup: /system.slice/mysql.service
+             └─1235 /usr/sbin/mysqld --daemonize --pid-file=/run/mysqld/mysqld.pid
+
+ 6월 20 09:33:51 student8-virtual-machine systemd[1]: Starting MySQL Community Server...
+ 6월 20 09:33:55 student8-virtual-machine systemd[1]: Started MySQL Community Server.
+root@student8-virtual-machine:~# cd /var/www/html
+root@student8-virtual-machine:/var/www/html# ls
+01.html  03.html  05.html  07.html  09.html  11.html  13.html  15.html  17.html  19.html  21.html  23.html
+02.html  04.html  06.html  08.html  10.html  12.html  14.html  16.html  18.html  20.html  22.html  index.html
+root@student8-virtual-machine:/var/www/html# ifconfig
+ens32: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.160.128  netmask 255.255.255.0  broadcast 192.168.160.255
+        inet6 fe80::b67d:dac3:235a:7a9a  prefixlen 64  scopeid 0x20<link>
+        ether 00:0c:29:9b:08:16  txqueuelen 1000  (Ethernet)
+        RX packets 759  bytes 501493 (501.4 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 311  bytes 28469 (28.4 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 136  bytes 11930 (11.9 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 136  bytes 11930 (11.9 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+root@student8-virtual-machine:/var/www/html# nano phpinfo.php
+root@student8-virtual-machine:/var/www/html# systemctl restart apache2
+root@student8-virtual-machine:/var/www/html# apt-get update
+기존:1 http://mirror.kakao.com/ubuntu bionic InRelease 
+받기:2 https://dl.google.com/linux/chrome/deb stable InRelease [1,825 B]                                                         
+받기:3 https://dl.google.com/linux/chrome/deb stable/main amd64 Packages [1,077 B]                                               
+받기:4 http://kr.archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]
+받기:5 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main i386 Packages [1,661 kB]
+받기:6 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [3,032 kB]
+받기:7 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 DEP-11 Metadata [297 kB]
+받기:8 http://kr.archive.ubuntu.com/ubuntu bionic-updates/universe i386 Packages [1,662 kB]
+받기:9 http://kr.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [1,910 kB]
+받기:10 http://kr.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 DEP-11 Metadata [304 kB]
+받기:11 http://kr.archive.ubuntu.com/ubuntu bionic-updates/multiverse amd64 DEP-11 Metadata [2,468 B]
+내려받기 8,959 k바이트, 소요시간 6초 (1,615 k바이트/초)                
+패키지 목록을 읽는 중입니다... 완료
+W: http://ftp.daumkakao.com/ubuntu/dists/bionic/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: http://kr.archive.ubuntu.com/ubuntu/dists/bionic-updates/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+root@student8-virtual-machine:/var/www/html# apt-get install php
+패키지 목록을 읽는 중입니다... 완료
+의존성 트리를 만드는 중입니다... 완료
+상태 정보를 읽는 중입니다... 완료        
+다음의 추가 패키지가 설치될 것입니다 :
+  libapache2-mod-php7.2 libargon2-0 php7.2 php7.2-cli php7.2-json php7.2-opcache php7.2-readline
+제안하는 패키지:
+  php-pear
+다음 새 패키지를 설치할 것입니다:
+  libapache2-mod-php7.2 libargon2-0 php php7.2 php7.2-cli php7.2-json php7.2-opcache php7.2-readline
+0개 업그레이드, 8개 새로 설치, 0개 제거 및 9개 업그레이드 안 함.
+2,990 k바이트 아카이브를 받아야 합니다.
+이 작업 후 10.5 M바이트의 디스크 공간을 더 사용하게 됩니다.
+계속 하시겠습니까? [Y/n] y
+받기:1 http://mirror.kakao.com/ubuntu bionic/main amd64 libargon2-0 amd64 0~20161029-1.1 [19.9 kB]
+받기:2 http://mirror.kakao.com/ubuntu bionic/main amd64 php all 1:7.2+60ubuntu1 [3,084 B]  
+받기:3 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 php7.2-json amd64 7.2.24-0ubuntu0.18.04.17 [18.9 kB]
+받기:4 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 php7.2-opcache amd64 7.2.24-0ubuntu0.18.04.17 [166 kB]
+받기:5 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 php7.2-readline amd64 7.2.24-0ubuntu0.18.04.17 [12.2 kB]
+받기:6 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 php7.2-cli amd64 7.2.24-0ubuntu0.18.04.17 [1,410 kB]
+받기:7 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libapache2-mod-php7.2 amd64 7.2.24-0ubuntu0.18.04.17 [1,352 kB]
+받기:8 http://kr.archive.ubuntu.com/ubuntu bionic-updates/main amd64 php7.2 all 7.2.24-0ubuntu0.18.04.17 [9,248 B]
+내려받기 2,990 k바이트, 소요시간 5초 (598 k바이트/초)
+Selecting previously unselected package libargon2-0:amd64.
+(데이터베이스 읽는중 ...현재 204036개의 파일과 디렉터리가 설치되어 있습니다.)
+Preparing to unpack .../0-libargon2-0_0~20161029-1.1_amd64.deb ...
+Unpacking libargon2-0:amd64 (0~20161029-1.1) ...
+Selecting previously unselected package php7.2-json.
+Preparing to unpack .../1-php7.2-json_7.2.24-0ubuntu0.18.04.17_amd64.deb ...
+Unpacking php7.2-json (7.2.24-0ubuntu0.18.04.17) ...
+Selecting previously unselected package php7.2-opcache.
+Preparing to unpack .../2-php7.2-opcache_7.2.24-0ubuntu0.18.04.17_amd64.deb ...
+Unpacking php7.2-opcache (7.2.24-0ubuntu0.18.04.17) ...
+Selecting previously unselected package php7.2-readline.
+Preparing to unpack .../3-php7.2-readline_7.2.24-0ubuntu0.18.04.17_amd64.deb ...
+Unpacking php7.2-readline (7.2.24-0ubuntu0.18.04.17) ...
+Selecting previously unselected package php7.2-cli.
+Preparing to unpack .../4-php7.2-cli_7.2.24-0ubuntu0.18.04.17_amd64.deb ...
+Unpacking php7.2-cli (7.2.24-0ubuntu0.18.04.17) ...
+Selecting previously unselected package libapache2-mod-php7.2.
+Preparing to unpack .../5-libapache2-mod-php7.2_7.2.24-0ubuntu0.18.04.17_amd64.deb ...
+Unpacking libapache2-mod-php7.2 (7.2.24-0ubuntu0.18.04.17) ...
+Selecting previously unselected package php7.2.
+Preparing to unpack .../6-php7.2_7.2.24-0ubuntu0.18.04.17_all.deb ...
+Unpacking php7.2 (7.2.24-0ubuntu0.18.04.17) ...
+Selecting previously unselected package php.
+Preparing to unpack .../7-php_1%3a7.2+60ubuntu1_all.deb ...
+Unpacking php (1:7.2+60ubuntu1) ...
+php7.2-opcache (7.2.24-0ubuntu0.18.04.17) 설정하는 중입니다 ...
+
+Creating config file /etc/php/7.2/mods-available/opcache.ini with new version
+libargon2-0:amd64 (0~20161029-1.1) 설정하는 중입니다 ...
+php7.2-json (7.2.24-0ubuntu0.18.04.17) 설정하는 중입니다 ...
+
+Creating config file /etc/php/7.2/mods-available/json.ini with new version
+php7.2-readline (7.2.24-0ubuntu0.18.04.17) 설정하는 중입니다 ...
+
+Creating config file /etc/php/7.2/mods-available/readline.ini with new version
+php7.2-cli (7.2.24-0ubuntu0.18.04.17) 설정하는 중입니다 ...
+update-alternatives: using /usr/bin/php7.2 to provide /usr/bin/php (php) in auto mode
+update-alternatives: using /usr/bin/phar7.2 to provide /usr/bin/phar (phar) in auto mode
+update-alternatives: using /usr/bin/phar.phar7.2 to provide /usr/bin/phar.phar (phar.phar) in auto mode
+
+Creating config file /etc/php/7.2/cli/php.ini with new version
+php_invoke: Enabled module exif for cli sapi
+php_invoke: Enabled module iconv for cli sapi
+php_invoke: Enabled module sockets for cli sapi
+php_invoke: Enabled module sysvmsg for cli sapi
+php_invoke: Enabled module fileinfo for cli sapi
+php_invoke: Enabled module ftp for cli sapi
+php_invoke: Enabled module sysvshm for cli sapi
+php_invoke: Enabled module shmop for cli sapi
+php_invoke: Enabled module calendar for cli sapi
+php_invoke: Enabled module gettext for cli sapi
+php_invoke: Enabled module tokenizer for cli sapi
+php_invoke: Enabled module phar for cli sapi
+php_invoke: Enabled module sysvsem for cli sapi
+php_invoke: Enabled module ctype for cli sapi
+php_invoke: Enabled module posix for cli sapi
+php_invoke: Enabled module pdo for cli sapi
+libapache2-mod-php7.2 (7.2.24-0ubuntu0.18.04.17) 설정하는 중입니다 ...
+
+Creating config file /etc/php/7.2/apache2/php.ini with new version
+php_invoke: Enabled module exif for apache2 sapi
+php_invoke: Enabled module iconv for apache2 sapi
+php_invoke: Enabled module sockets for apache2 sapi
+php_invoke: Enabled module sysvmsg for apache2 sapi
+php_invoke: Enabled module fileinfo for apache2 sapi
+php_invoke: Enabled module ftp for apache2 sapi
+php_invoke: Enabled module sysvshm for apache2 sapi
+php_invoke: Enabled module shmop for apache2 sapi
+php_invoke: Enabled module calendar for apache2 sapi
+php_invoke: Enabled module gettext for apache2 sapi
+php_invoke: Enabled module tokenizer for apache2 sapi
+php_invoke: Enabled module phar for apache2 sapi
+php_invoke: Enabled module sysvsem for apache2 sapi
+php_invoke: Enabled module ctype for apache2 sapi
+php_invoke: Enabled module posix for apache2 sapi
+php_invoke: Enabled module pdo for apache2 sapi
+Module mpm_event disabled.
+Enabling module mpm_prefork.
+apache2_switch_mpm Switch to prefork
+apache2_invoke: Enable module php7.2
+php7.2 (7.2.24-0ubuntu0.18.04.17) 설정하는 중입니다 ...
+php (1:7.2+60ubuntu1) 설정하는 중입니다 ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.1) ...
+root@student8-virtual-machine:/var/www/html# systemctl restart apache2
+root@student8-virtual-machine:/var/www/html# chmod 777 xe
+root@student8-virtual-machine:/var/www/html# ls -l
+합계 112
+-rw-r--r--  1 root root   815  6월 12 15:27 01.html
+-rw-r--r--  1 root root   591  6월 12 15:27 02.html
+-rw-r--r--  1 root root   617  6월 12 15:27 03.html
+-rw-r--r--  1 root root   625  6월 12 15:27 04.html
+-rw-r--r--  1 root root   730  6월 12 15:27 05.html
+-rw-r--r--  1 root root   649  6월 12 15:27 06.html
+-rw-r--r--  1 root root   712  6월 12 15:27 07.html
+-rw-r--r--  1 root root   694  6월 12 15:27 08.html
+-rw-r--r--  1 root root   786  6월 12 15:27 09.html
+-rw-r--r--  1 root root   638  6월 12 15:27 10.html
+-rw-r--r--  1 root root   702  6월 12 15:27 11.html
+-rw-r--r--  1 root root   838  6월 12 15:27 12.html
+-rw-r--r--  1 root root   648  6월 12 15:27 13.html
+-rw-r--r--  1 root root   762  6월 12 15:27 14.html
+-rw-r--r--  1 root root   856  6월 12 15:27 15.html
+-rw-r--r--  1 root root   987  6월 12 15:27 16.html
+-rw-r--r--  1 root root   655  6월 12 15:27 17.html
+-rw-r--r--  1 root root  1038  6월 12 15:27 18.html
+-rw-r--r--  1 root root  1408  6월 12 15:27 19.html
+-rw-r--r--  1 root root   661  6월 12 15:27 20.html
+-rw-r--r--  1 root root   862  6월 12 15:27 21.html
+-rw-r--r--  1 root root   817  6월 12 15:27 22.html
+-rw-r--r--  1 root root  1492  6월 12 15:27 23.html
+-rw-r--r--  1 root root 10918  6월 13 10:28 index.html
+-rw-r--r--  1 root root    20  6월 20 10:15 phpinfo.php
+drwxrwxrwx 13 root root  4096  6월 20 10:39 xe
+root@student8-virtual-machine:/var/www/html# cd xe.modules
+bash: cd: xe.modules: 그런 파일이나 디렉터리가 없습니다
+root@student8-virtual-machine:/var/www/html# cd xe/modules
+root@student8-virtual-machine:/var/www/html/xe/modules# ls
+addon  adminlogging  board    communication  document  file      install             krzip   member  message  page   poll  seo      spamfilter  trash
+admin  autoinstall   comment  counter        editor    importer  integration_search  layout  menu    module   point  rss   session  tag         widget
+root@student8-virtual-machine:/var/www/html/xe/modules# mysql -u root
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.7.42-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> grant all on xeDB.* to xeUser@localhost identified by '1234'
+    -> ;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> ^C
+mysql> grant all on xeDB.* to xeUser@localhost identified by '1234';
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> exit
+Bye
+root@student8-virtual-machine:/var/www/html/xe/modules# mysql -u xeUser -p1234
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.42-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database xeDB;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> exit
+Bye
+root@student8-virtual-machine:/var/www/html/xe/modules# php install.php
+Could not open input file: install.php
+root@student8-virtual-machine:/var/www/html/xe/modules# cd board
+root@student8-virtual-machine:/var/www/html/xe/modules/board# ls
+board.admin.controller.php  board.admin.view.php  board.class.php       board.mobile.php  board.view.php  conf  m.skins  ruleset  tpl
+board.admin.model.php       board.api.php         board.controller.php  board.model.php   board.wap.php   lang  queries  skins
