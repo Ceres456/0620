@@ -1,0 +1,70 @@
+root@student8-virtual-machine:~/바탕화면# cd
+root@student8-virtual-machine:~# apt-get -y install vsftpd
+패키지 목록을 읽는 중입니다... 완료
+의존성 트리를 만드는 중입니다... 완료
+상태 정보를 읽는 중입니다... 완료        
+다음 새 패키지를 설치할 것입니다:
+  vsftpd
+0개 업그레이드, 1개 새로 설치, 0개 제거 및 9개 업그레이드 안 함.
+115 k바이트 아카이브를 받아야 합니다.
+이 작업 후 334 k바이트의 디스크 공간을 더 사용하게 됩니다.
+받기:1 http://mirror.kakao.com/ubuntu bionic/main amd64 vsftpd amd64 3.0.3-9build1 [115 kB]
+내려받기 115 k바이트, 소요시간 0초 (597 k바이트/초)
+패키지를 미리 설정하는 중입니다...
+Selecting previously unselected package vsftpd.
+(데이터베이스 읽는중 ...현재 203979개의 파일과 디렉터리가 설치되어 있습니다.)
+Preparing to unpack .../vsftpd_3.0.3-9build1_amd64.deb ...
+Unpacking vsftpd (3.0.3-9build1) ...
+vsftpd (3.0.3-9build1) 설정하는 중입니다 ...
+Created symlink /etc/systemd/system/multi-user.target.wants/vsftpd.service → /lib/systemd/system/vsftpd.service.
+Processing triggers for man-db (2.10.2-1) ...
+root@student8-virtual-machine:~# nano /etc/vsftpd.conf
+root@student8-virtual-machine:~# cd /srv/ftp
+root@student8-virtual-machine:/srv/ftp# mkdir pub
+root@student8-virtual-machine:/srv/ftp# chmod 777 pub
+root@student8-virtual-machine:/srv/ftp# cd pub
+root@student8-virtual-machine:/srv/ftp/pub# cp /boot/vm* file1
+cp: 'file1' 대상은 디렉터리가 아닙니다
+root@student8-virtual-machine:/srv/ftp/pub# ls
+root@student8-virtual-machine:/srv/ftp/pub# ls -l
+합계 0
+root@student8-virtual-machine:/srv/ftp/pub# cp /boot/vm* file2
+cp: 'file2' 대상은 디렉터리가 아닙니다
+root@student8-virtual-machine:/srv/ftp/pub# systemctl restart vsftpd
+root@student8-virtual-machine:/srv/ftp/pub# systemctl enable vsftpd
+Synchronizing state of vsftpd.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable vsftpd
+^[[Aroot@student8-virtual-machine:/srv/ftp/pub# systemctl status vsftpd
+● vsftpd.service - vsftpd FTP server
+     Loaded: loaded (/lib/systemd/system/vsftpd.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2023-06-20 09:38:28 KST; 31s ago
+   Main PID: 2348 (vsftpd)
+      Tasks: 1 (limit: 4573)
+     Memory: 696.0K
+        CPU: 6ms
+     CGroup: /system.slice/vsftpd.service
+             └─2348 /usr/sbin/vsftpd /etc/vsftpd.conf
+
+ 6월 20 09:38:28 student8-virtual-machine systemd[1]: Starting vsftpd FTP server...
+ 6월 20 09:38:28 student8-virtual-machine systemd[1]: Started vsftpd FTP server.
+root@student8-virtual-machine:/srv/ftp/pub# ufw allow ftp
+규칙이 추가되었습니다
+규칙이 추가되었습니다 (v6)
+root@student8-virtual-machine:/srv/ftp/pub# systemctl stop ufw
+root@student8-virtual-machine:/srv/ftp/pub# mkdir file1
+root@student8-virtual-machine:/srv/ftp/pub# rm file1
+rm: 'file1'을(를) 제거할 수 없습니다: 디렉터리입니다
+root@student8-virtual-machine:/srv/ftp/pub# mkdir file1
+mkdir: `file1' 디렉터리를 만들 수 없습니다: 파일이 있습니다
+root@student8-virtual-machine:/srv/ftp/pub# ls -l
+합계 4
+drwxr-xr-x 2 root root 4096  6월 20 09:52 file1
+root@student8-virtual-machine:/srv/ftp/pub# cp /boot/vm* file1
+root@student8-virtual-machine:/srv/ftp/pub# cd file1
+root@student8-virtual-machine:/srv/ftp/pub/file1# ls
+vmlinuz  vmlinuz-5.19.0-32-generic  vmlinuz-5.19.0-35-generic  vmlinuz.old
+root@student8-virtual-machine:/srv/ftp/pub/file1# ufw allow ftp
+존재하는 규칙을 추가하는 걸 건너뜁니다
+존재하는 규칙을 추가하는 걸 건너뜁니다 (v6)
+root@student8-virtual-machine:/srv/ftp/pub/file1# systemctl stop ufw
+root@student8-virtual-machine:/srv/ftp/pub/file1# 
